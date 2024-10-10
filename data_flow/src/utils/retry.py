@@ -9,6 +9,7 @@ def retry_on_failure(func, retries=3, delay=5):
     :param delay: delay between retries in seconds
     """
     for i in range(retries):
+        logging.info(f"Attempt {i+1}/{retries} for {func.__name__}")
         try:
             return func()
         except Exception as e:

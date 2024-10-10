@@ -7,6 +7,7 @@ def process_data(data):
     """
     conn = psycopg2.connect(DB_CONNECTION_STRING)
     cur = conn.cursor()
+    x = lambda x: print(f"Name: {x['name']}, Price: {x['price']}, Market Cap: {x['market_cap']}")
 
     query = """
     INSERT INTO crypto_data (name, price, market_cap, timestamp)
@@ -14,9 +15,8 @@ def process_data(data):
     """
 
     for item in data:
-        cur.execute(query, (item['name'], item['price'], item['market_cap'], item.get('timestamp', None)))
-
+        x(item) 
+        # cur.execute(query, (item['name'], item['price'], item['market_cap'], item.get('timestamp', None)))
     conn.commit()
     cur.close()
     conn.close()
-    print(f"Inserted {len(data)} records into the database")
