@@ -5,13 +5,14 @@ from utils.currency_manager import CurrencyManager
 
 currencyManager = CurrencyManager()
 
-def scrape_coinmarketcap():
+def scrape_coinmarketcap(url = 'https://coinmarketcap.com/', source_name = 'coinmarketcap', trust_factor = 0.9):
     """
     Scrapes the latest cryptocurrency data from CoinMarketCap's website.
 
     :return: A list of cryptocurrencies with name, price, and market cap.
     """
-    url = 'https://coinmarketcap.com/'
+    url = url
+    source_name = source_name
 
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
@@ -46,7 +47,8 @@ def scrape_coinmarketcap():
                 crypto_object = {
                     'name': name,
                     'price': price,
-                    'market_cap': market_cap
+                    'market_cap': market_cap,
+                    'source' : source_name,
                 }
                 crypto_data.append(crypto_object)
 

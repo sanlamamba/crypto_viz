@@ -1,3 +1,5 @@
+import datetime
+
 def normalize_data(raw_data):
     """
     This function takes raw data from multiple sources and normalizes it into a consistent format.
@@ -10,7 +12,9 @@ def normalize_data(raw_data):
             'name': item['name'].strip(),
             'price': float(item['price']),
             'market_cap': float(item['market_cap']),
-            'timestamp': item.get('timestamp', None) 
+            'timestamp': item.get('timestamp', None),
+            'source': item.get('source', None),
+            'created_at': datetime.now().isoformat(),
         })
     
     return normalized_data
