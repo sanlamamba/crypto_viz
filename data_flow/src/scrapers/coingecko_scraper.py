@@ -1,36 +1,52 @@
 import requests
 from bs4 import BeautifulSoup
 
-
-def generate_mock_data():
-    # generates a random name price and market cap for testing purposes
-    alpha = 'abcdefghijklmnopqrstuvwxyz'
-    num = '0123456789'
-    name = ''.join([alpha[i] for i in range(10)])
-    price = ''.join([num[i] for i in range(4)])
-    market_cap = ''.join([num[i] for i in range(10)])
-    return {'name': name, 'price': price, 'market_cap': market_cap}
-
-def create_mock_data():
-    # creates a list of 10 mock data
-    return [generate_mock_data() for i in range(10)]
-
-
-def scrape_coingecko():
-    # url = 'https://www.coingecko.com/'
-    # headers = {
-    #     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-    # }
-    # response = requests.get(url, headers=headers)
+class CryptoExtractor:
     
-    # if response.status_code != 200:
-    #     raise Exception(f"Failed to fetch data from CoinGecko. Status code: {response.status_code}")
-    
-    # soup = BeautifulSoup(response.content, 'html.parser')
+    @staticmethod
+    def soup_extract(response):
+        """Extract the table rows from the HTML content."""
+        soup = BeautifulSoup(response.content, 'html.parser')
+        table = soup.find('table')
+        return table.find_all('tr') if table else []
 
-    # print(soup.prettify())
-    # crypto_data = []
-    # return mockdata like coin gecko 
-    return create_mock_data()
+    @staticmethod
+    def extract_crypto(response):
+        """Extract cryptocurrency data from the table rows."""
+        table_rows = CryptoExtractor.soup_extract(response)
+        
+        cryptos = [
+            {
+                'Rank': columns[1].text.strip(),
+                'name': currency_name,
+                'abbreviation': currency_abbreviation,
+                'price': columns[4].text.strip(),
+                '1h Change': columns[5].text.strip(),
+                '24h Change': columns[6].text.strip(),
+                '7d Change': columns[7].text.strip(),
+                'market_cap': columns[9].text.strip()
+            }
+            for row in table_rows
+            if (columns := row.find_all('td')) 
+            and (currency_data := columns[2].text.strip().split('\n')) 
+            and (currency_name := currency_data[0].strip())  # Name
+            and (currency_abbreviation := currency_data[1].strip() if len(currency_data) > 1 else None)  
+        ]
+        
+        return cryptos
+
+def scrape_coingecko(source='coingecko'):
+    """Main function to scrape cryptocurrency data from CoinGecko."""
+    url = 'https://www.coingecko.com/fr'
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    }
+    response = requests.get(url, headers=headers)
     
-    return crypto_data
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch data from CoinGecko. Status code: {response.status_code}")
+    
+    extractor = CryptoExtractor()
+    cryptos = extractor.extract_crypto(response)
+    
+    return [{**crypto, 'source': source} for crypto in cryptos]
