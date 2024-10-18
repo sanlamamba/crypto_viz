@@ -1,6 +1,6 @@
 import pytest
-from src.scrapers.coingecko_scraper import scrape_coingecko
-from src.scrapers.coinmarketcap_scraper import scrape_coinmarketcap
+from scrapers.coingecko_scraper import scrape_coingecko
+from scrapers.coinmarketcap_scraper import scrape_coinmarketcap
 
 def test_coingecko_scraper():
     data = scrape_coingecko()
