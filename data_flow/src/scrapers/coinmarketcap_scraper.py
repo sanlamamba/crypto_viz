@@ -27,7 +27,7 @@ def scrape_coinmarketcap(url = 'https://coinmarketcap.com/', source_name = 'coin
 
         soup = BeautifulSoup(response.content, 'html.parser')
     
-        crypto_table = soup.find('table', {'class': 'sc-7b3ac367-3 etbcea cmc-table'})  # Adjusted table class
+        crypto_table = soup.find('table', {'class': 'sc-7b3ac367-3 etbcea cmc-table'}) 
 
         rows = crypto_table.find('tbody').find_all('tr')
 
