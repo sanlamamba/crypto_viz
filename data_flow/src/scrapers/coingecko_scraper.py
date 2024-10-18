@@ -1,5 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from utils.currency_manager import CurrencyManager
+
+currencyManager = CurrencyManager()
 
 class CryptoExtractor:
     
@@ -14,17 +17,19 @@ class CryptoExtractor:
     def extract_crypto(response):
         """Extract cryptocurrency data from the table rows."""
         table_rows = CryptoExtractor.soup_extract(response)
+        price = currencyManager.process(price)
+        market_cap = currencyManager.process(market_cap)
         
         cryptos = [
             {
                 'Rank': columns[1].text.strip(),
                 'name': currency_name,
                 'abbreviation': currency_abbreviation,
-                'price': columns[4].text.strip(),
+                'price': price,
                 '1h Change': columns[5].text.strip(),
                 '24h Change': columns[6].text.strip(),
                 '7d Change': columns[7].text.strip(),
-                'market_cap': columns[9].text.strip()
+                'market_cap': market_cap,
             }
             for row in table_rows
             if (columns := row.find_all('td')) 
