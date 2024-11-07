@@ -13,7 +13,7 @@ import jakarta.websocket.Session;
 
 @ServerEndpoint("/chat/{username}")
 @ApplicationScoped
-public class PocSocket {
+public class TestSocket {
     HashMap<String, Session> sessions = new HashMap<>();
     ConcurrentHashMap<String, String> users = new ConcurrentHashMap<>();
 
@@ -46,18 +46,17 @@ public class PocSocket {
         System.out.println("Broadcasting: " + message);
         if (message == null) {
             message = "nullmessage";
+            broadcast2(message);
         } else {
             broadcast2(message);
         }
     }
 
     private void broadcast2(final String message) {
-        sessions.values().forEach(s -> {
-            s.getAsyncRemote().sendObject(message, result -> {
-                if (result.getException() != null) {
-                    System.out.println("Unable to send message: " + result.getException());
-                }
-            });
-        });
+        sessions.values().forEach(s -> s.getAsyncRemote().sendObject(message, result -> {
+            if (result.getException() != null) {
+                System.out.println("Unable to send message: " + result.getException());
+            }
+        }));
     }
 }
