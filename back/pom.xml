@@ -38,9 +38,10 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest</artifactId>
         </dependency>
-        <dependency>
+<dependency>
     <groupId>io.quarkus</groupId>
-    <artifactId>quarkus-jdbc-postgresql</artifactId>
+    <artifactId>quarkus-spring-data-jpa</artifactId>
+    <version>3.16.1</version>
 </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -54,7 +55,13 @@
     <groupId>io.quarkus</groupId>
     <artifactId>quarkus-junit5</artifactId>
             <scope>test</scope>
+    </dependency>
+    <dependency>
+    <groupId>jakarta.persistence</groupId>
+    <artifactId>jakarta.persistence-api</artifactId>
+    <version>3.2.0</version>
 </dependency>
+
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
