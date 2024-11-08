@@ -25,14 +25,13 @@ def run_scraper():
         coingecko_data = retry_on_failure(scrape_coingecko)
         coinmarketcap_data = retry_on_failure(scrape_coinmarketcap)
 
-        combined_data = coingecko_data + coinmarketcap_data
+        combined_data = coinmarketcap_data + coingecko_data
 
 
         normalizer = DataNormalizer(combined_data)
         normalized_data = normalizer.normalize_data()
         
         validate_data(normalized_data)
-
         send_to_kafka(normalized_data)
         logging.info("Data successfully sent to Kafka.")
     except Exception as e:
@@ -42,9 +41,8 @@ def start_scheduler():
     """
     Run the scheduler to scrape data every 5 minutes.
     """
-    logging.info("Starting scheduler for scraping every 5 minutes.")
-    print("[INFO] Scheduler started, scraping every 5 minutes.")
-    schedule_task(run_scraper, interval=5) 
+    logging.info("Starting scheduler for scraping every 1 minutes.")
+    schedule_task(run_scraper, interval=1) 
 
 def main():
     """

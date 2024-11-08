@@ -65,3 +65,4 @@ def scrape_coinmarketcap(url='https://coinmarketcap.com/', source_name='coinmark
         logging.error(f"Error while scraping CoinMarketCap: {e}")
         print(e)
         return []
+    

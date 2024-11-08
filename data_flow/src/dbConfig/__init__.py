@@ -5,7 +5,6 @@ from alembic.config import Config
 from alembic import command
 import os
 from .base import Base
-from .models import Currency, CurrencyData, CurrencyDataHistory
 
 DB_USERNAME = os.getenv("DB_USERNAME", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "examplepassword")
