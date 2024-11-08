@@ -6,6 +6,7 @@ from alembic import command
 import os
 from .base import Base
 
+
 DB_USERNAME = os.getenv("DB_USERNAME", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "examplepassword")
 DB_HOST = os.getenv("DB_HOST", "localhost")
@@ -26,3 +27,4 @@ def init_db():
     """Initialize the database and apply migrations."""
     print("[INFO] Initializing the database and applying migrations...")
     run_migrations()
+

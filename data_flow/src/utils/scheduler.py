@@ -21,3 +21,4 @@ def run_scheduler(job, interval):
     #     logging.info("Scheduler stopped.")
     # except Exception as e:
     #     logging.error(f"Error in scheduler: {e}")
+

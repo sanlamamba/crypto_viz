@@ -60,3 +60,4 @@ class CurrencyDataHistory(Base):
         return (f"<CurrencyDataHistory(currency_id='{self.currency_id}', price={self.price}, "
                 f"market_cap={self.market_cap}, source='{self.source}', "
                 f"trust_factor={self.trust_factor}, timestamp={self.timestamp}, created_at={self.created_at})>")
+ 
