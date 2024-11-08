@@ -1,7 +1,6 @@
-# models.py
 from sqlalchemy import Column, String, Float, DateTime, ARRAY
 from datetime import datetime
-from . import Base
+from .base import Base 
 
 class Currency(Base):
     __tablename__ = 'currencies'
@@ -10,7 +9,7 @@ class Currency(Base):
     name = Column(String, index=True)
     price = Column(Float)
     market_cap = Column(Float)
-    price_history = Column(ARRAY(Float)) 
+    price_history = Column(ARRAY(Float))
     market_cap_history = Column(ARRAY(Float))
     date = Column(DateTime, default=datetime.now)
 
@@ -21,6 +20,6 @@ class CurrencyHistory(Base):
     name = Column(String, index=True)
     price = Column(Float)
     market_cap = Column(Float)
-    price_history = Column(ARRAY(Float))  
+    price_history = Column(ARRAY(Float))
     market_cap_history = Column(ARRAY(Float))
     date = Column(DateTime, default=datetime.now)

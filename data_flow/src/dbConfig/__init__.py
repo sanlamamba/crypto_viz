@@ -1,9 +1,8 @@
-# dbConfig/__init__.py
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker
 import os
-
-Base = declarative_base()
+from .base import Base  
+from .models import Currency, CurrencyHistory 
 
 DB_USERNAME = os.getenv("DB_USERNAME", "root")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "examplepassword")
@@ -18,6 +17,4 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def init_db():
-    # check if the database exists and create it if it doesn't 
-    # check if the tables exist and create them if they don't
-    
+    pass
