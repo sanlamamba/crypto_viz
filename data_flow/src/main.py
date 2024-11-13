@@ -19,7 +19,6 @@ def run_scraper():
     Main entry point for the scraper. Scrapes, normalizes, validates, and sends data to Kafka.
     """
     setup_logging()
-    init_db()
     logging.info("Starting scrapers...")
 
     try:
@@ -49,7 +48,7 @@ def main():
     """
     Run both producer (scraper) and consumer concurrently using threads.
     """
-    
+    init_db()
 
     ochestrator = [
         (start_scheduler, ()),  

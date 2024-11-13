@@ -101,15 +101,16 @@ class CryptoDataManager:
         Archives old data from currency_data to currency_data_history before updating.
         """
         archive_query = """
-        INSERT INTO currency_data_history (currency_id, price, market_cap, source, trust_factor, timestamp, created_at)
-        SELECT currency_id, price, market_cap, source, trust_factor, updated_at, %s
+        INSERT INTO currency_data_history (id, currency_id, price, market_cap, source, trust_factor, timestamp, created_at)
+        SELECT %s, currency_id, price, market_cap, source, trust_factor, updated_at, %s
         FROM currency_data
         WHERE currency_id = %s
         """
         conn = db_pool.get_connection()
         try:
             with conn.cursor() as cur:
-                cur.execute(archive_query, (datetime.now(), currency_id))
+                new_id = str(uuid.uuid4())
+                cur.execute(archive_query, (new_id, datetime.now(), currency_id))
             conn.commit()
             logging.info(f"Archived data for currency_id {currency_id}")
         except Exception as e:
@@ -123,17 +124,14 @@ class CryptoDataManager:
         Processes and saves data to the database, inserting or updating as necessary.
         """
         for item in data:
-            # Set symbol as name if symbol is missing
             item['symbol'] = item.get('symbol') or item['name']
             
-            # Get or create the currency ID
             currency_id = self.get_currency_id(item['name'], item['symbol'])
             
             if not currency_id:
                 logging.error(f"Currency {item['name']} not found or could not be inserted in 'currencies' table. Skipping.")
                 continue
             
-            # Insert or update data, archiving if updating
             self.insert_or_update_data(currency_id, item)
 
         logging.info("Data processing and database update successful.")

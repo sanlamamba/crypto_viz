@@ -25,6 +25,6 @@ def run_migrations():
 
 def init_db():
     """Initialize the database and apply migrations."""
-    print("[INFO] Initializing the database and applying migrations...")
     run_migrations()
-
+    Base.metadata.create_all(bind=engine)
+    print("[INFO] DB migrations FInished")
