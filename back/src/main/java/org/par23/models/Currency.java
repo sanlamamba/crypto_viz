@@ -1,7 +1,7 @@
 package org.par23.models;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,26 +12,57 @@ public class Currency {
     @Column(name = "id", nullable = false)
     private String id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "price")
-    private Double price;
+    @Column(name = "symbol", nullable = false, unique = true)
+    private String symbol;
 
-    @Column(name = "market_cap")
-    private Double marketCap;
+    @JsonbTransient
+    @OneToOne(mappedBy = "currency", cascade = CascadeType.ALL, orphanRemoval = true)
+    private CurrencyData currentData;
 
-    @ElementCollection
-    @CollectionTable(name = "currency_price_history", joinColumns = @JoinColumn(name = "currency_id"))
-    @Column(name = "price_history")
-    private List<Double> priceHistory;
+    @JsonbTransient
+    @OneToMany(mappedBy = "currency", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CurrencyDataHistory> history;
 
-    @ElementCollection
-    @CollectionTable(name = "currency_market_cap_history", joinColumns = @JoinColumn(name = "currency_id"))
-    @Column(name = "market_cap_history")
-    private List<Double> marketCapHistory;
+    public String getId() {
+        return id;
+    }
 
-    @Column(name = "date")
-    private LocalDateTime date = LocalDateTime.now();
+    public void setId(String id) {
+        this.id = id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public CurrencyData getCurrentData() {
+        return currentData;
+    }
+
+    public void setCurrentData(CurrencyData currentData) {
+        this.currentData = currentData;
+    }
+
+    public List<CurrencyDataHistory> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<CurrencyDataHistory> history) {
+        this.history = history;
+    }
 }
