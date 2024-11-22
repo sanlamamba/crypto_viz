@@ -1,11 +1,19 @@
+networks:
+  data_flow_network:
+    driver: bridge
+
 services:
   zookeeper:
     image: wurstmeister/zookeeper:latest
+    networks:
+      - data_flow_network
     ports:
       - "2181:2181"
 
   kafka:
     image: wurstmeister/kafka:latest
+    networks:
+      - data_flow_network
     ports:
       - "9092:9092"
     expose:
@@ -22,6 +30,8 @@ services:
 
   postgres:
     image: postgres:13
+    networks:
+      - data_flow_network
     environment:
       POSTGRES_DB: cryptoviz
       POSTGRES_USER: root
@@ -36,6 +46,23 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
+  scraper_app:
+    build:
+      context: .
+    depends_on:
+      - kafka
+      - postgres
+    networks:
+      - data_flow_network
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: root
+      DB_PASSWORD: examplepassword
+      DB_NAME: cryptoviz
+    volumes:
+      - .:/app
+    command: ["python", "main.py"]
+
 volumes:
   postgres-data:
-
