@@ -1,11 +1,8 @@
 package org.par23.controllers;
 
-import java.util.List;
 import java.util.Optional;
 
-import org.par23.models.Currency;
 import org.par23.models.CurrencyData;
-import org.par23.models.CurrencyDataHistory;
 import org.par23.repositories.CurrencyDataHistoryRepository;
 import org.par23.repositories.CurrencyDataRepository;
 import org.par23.repositories.CurrencyRepository;
