@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <div>
+        <label for="currencyName">Currency Name:</label>
+        <input type="text" id="currencyName">
+        <button onclick="getCurrentData()">Get Current Data</button>
+        <button onclick="getHistory()">Get History</button>
+        <button onclick="getCurrencies()">Get All Currencies</button>
+        <button onclick="getAllCurrentData()">Get All Current Data</button>
+    </div>
+    <pre id="output"></pre>
+
+    <script>
+        const ws = new WebSocket('ws://localhost:8080/websocket');
+
+        ws.onopen = () => {
+            console.log('Connected to WebSocket');
+        };
+
+        ws.onmessage = (event) => {
+            document.getElementById('output').textContent = event.data;
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket Error: ', error);
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket connection closed');
+        };
+
+        function getCurrentData() {
+            const currencyName = document.getElementById('currencyName').value;
+            ws.send(currencyName);
+        }
+
+        function getHistory() {
+            const currencyName = document.getElementById('currencyName').value;
+            ws.send(currencyName + '/history');
+        }
+
+        function getCurrencies() {
+            ws.send('currencies');
+        }
+
+        function getAllCurrentData() {
+            ws.send('currencies/current');
+        }
+    </script>
+</body>
+</html>
