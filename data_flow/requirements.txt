@@ -2,7 +2,6 @@ requests==2.32.3
 beautifulsoup4==4.12.2
 kafka-python==2.0.2
 kafka-python-ng==2.2.3
-psycopg2==2.9.3
 schedule==1.2.2
 sqlalchemy==2.0.36
 bs4==0.0.2
