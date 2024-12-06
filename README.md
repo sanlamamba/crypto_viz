@@ -146,7 +146,7 @@ Chaque scraper a son propre fichier pour une meilleure organisation.
 - **Prix et Capitalisation de l'Ethereum** 👩‍💸
 - **Jauge de Trust Factor** : Confiance pour BTC, ETH, etc.
 
-   ## Diagramme Architecture
+## Diagramme Architecture
 ```mermaid
   flowchart TD
  subgraph subGraph0["Data Flow"]
