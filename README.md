@@ -140,20 +140,13 @@ Chaque scraper a son propre fichier pour une meilleure organisation.
 
 ## Grafana : Visualisation des Données 📈🎨
 - **Liste des Cryptomonnaies 🏛**
-- **Séries temporelles ⌛** : Évolution du prix des cryptos
-- **Barres comparatives** 📊 : Comparaison des prix des cryptos du top 10
+ - **Time Series⌛**: Évolution du prix des cryptos
+ - **Bar chart**  📊 : Comparaison des prix des cryptos du top 10
 - **Prix et Capitalisation du Bitcoin** 💰
 - **Prix et Capitalisation de l'Ethereum** 👩‍💸
 - **Jauge de Trust Factor** : Confiance pour BTC, ETH, etc.
 
-# Grafana
- - Liste des Cryptomonnaies
- - Time Series  des cryptos ( evolution du prix)
- - Bar chart  ( comparer le prix de plusieurs cryptos du top 10)
- - Price et Market Cap du Bitcoin
- - Price et Market Cap de Etherum
- - Jauge de trust factor ( BTC, ETH ? )
-   
+   ## Diagramme Architecture
 ```mermaid
   flowchart TD
  subgraph subGraph0["Data Flow"]
