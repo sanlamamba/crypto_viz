@@ -169,5 +169,30 @@ Endpoint documentation
  - Price et Market Cap du Bitcoin
  - Price et Market Cap de Etherum
  - Jauge de trust factor ( BTC, ETH ? )
+   
+```mermaid
+  flowchart TD
+ subgraph subGraph0["Data Flow"]
+        A["Python Scraper"]
+        B["Kafka"]
+        C["Python Data Worker API<br>"]
+        D["Database"]
+  end
+ subgraph subGraph1["Frontend Flow"]
+        E["Quarkus Frontend API"]
+        F["Grafana"]
+  end
+ subgraph subGraph2["Data Processing"]
+        G["Kafka DLQ"]
+        H["Redis Cache"]
+        I["Analytic Mini-Service"]
+  end
+    A --> B
+    B --> C
+    C --> D & G & H
+    E --> F & D
+    F --> E
+    I --> D & F
+    J["Monitoring & Logging"] --> C & B & D
 
-  
+```
