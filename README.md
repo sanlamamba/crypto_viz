@@ -138,7 +138,6 @@ Chaque scraper a son propre fichier pour une meilleure organisation.
 }
 ```
 
-<<<<<<< HEAD
 ## Grafana : Visualisation des Données 📈🎨
 - **Liste des Cryptomonnaies 🏛**
 - **Séries temporelles ⌛** : Évolution du prix des cryptos
