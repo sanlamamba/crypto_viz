@@ -138,6 +138,7 @@ Chaque scraper a son propre fichier pour une meilleure organisation.
 }
 ```
 
+<<<<<<< HEAD
 ## Grafana : Visualisation des Données 📈🎨
 - **Liste des Cryptomonnaies 🏛**
 - **Séries temporelles ⌛** : Évolution du prix des cryptos
@@ -146,30 +147,39 @@ Chaque scraper a son propre fichier pour une meilleure organisation.
 - **Prix et Capitalisation de l'Ethereum** 👩‍💸
 - **Jauge de Trust Factor** : Confiance pour BTC, ETH, etc.
 
+# Grafana
+ - Liste des Cryptomonnaies
+ - Time Series  des cryptos ( evolution du prix)
+ - Bar chart  ( comparer le prix de plusieurs cryptos du top 10)
+ - Price et Market Cap du Bitcoin
+ - Price et Market Cap de Etherum
+ - Jauge de trust factor ( BTC, ETH ? )
+   
 ```mermaid
-flowchart TD
-subgraph subGraph0["Flux de Données"]
-    A["Python Scraper"]
-    B["Kafka"]
-    C["API Worker Python<br>"]
-    D["Base de Données"]
-end
-subgraph subGraph1["Flux Frontend"]
-    E["API Quarkus"]
-    F["Grafana"]
-end
-subgraph subGraph2["Traitement des Données"]
-    G["Kafka DLQ"]
-    H["Cache Redis"]
-    I["Mini-Service Analytique"]
-end
-A --> B
-B --> C
-C --> D & G & H
-E --> F & D
-F --> E
-I --> D & F
-J["Monitoring & Logging"] --> C & B & D
+  flowchart TD
+ subgraph subGraph0["Data Flow"]
+        A["Python Scraper"]
+        B["Kafka"]
+        C["Python Data Worker API<br>"]
+        D["Database"]
+  end
+ subgraph subGraph1["Frontend Flow"]
+        E["Quarkus Frontend API"]
+        F["Grafana"]
+  end
+ subgraph subGraph2["Data Processing"]
+        G["Kafka DLQ"]
+        H["Redis Cache"]
+        I["Analytic Mini-Service"]
+  end
+    A --> B
+    B --> C
+    C --> D & G & H
+    E --> F & D
+    F --> E
+    I --> D & F
+    J["Monitoring & Logging"] --> C & B & D
+
 ```
 
 Et voilà ! Vous avez maintenant une meilleure vision de CryptoViz 📈🔥 ! Si vous avez des questions ou avez besoin de plus de détails, n'hésitez pas à demander. Bonne exploration crypto 🌐 !
