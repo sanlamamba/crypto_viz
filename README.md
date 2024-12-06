@@ -66,10 +66,6 @@ The data flow services and Grafana are managed via Docker Compose.
    ```
    http://localhost:8080
    ```
-```
-
-
-
 ## Data Flow 
 We utilize Beautiful Soup, a Python library, to scrape specific cryptocurrency information from different the source website.
 Each scrappers have his file 
