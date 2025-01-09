@@ -3,5 +3,16 @@
   "java.compile.nullAnalysis.mode": "automatic",
   "yaml.schemas": {
     "https://www.artillery.io/schema.json": []
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Data Crypto Viz",
+      "database": "cryptoviz",
+      "username": "root"
+    }
+  ]
 }

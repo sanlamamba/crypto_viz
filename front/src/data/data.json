@@ -1,0 +1,134 @@
+{
+    "cryptocurrencies": [
+      {
+        "id": "1f4e7df8-4519-4bb8-93cc-1ad3c9d72f84",
+        "name": "Bitcoin",
+        "symbol": "BTC"
+      },
+      {
+        "id": "4e2d6d27-812b-4d92-9d9e-8c560b57e2f5",
+        "name": "Ethereum",
+        "symbol": "ETH"
+      },
+      {
+        "id": "5a8e3b3d-f4b0-49f7-a576-85b3bcad6b2f",
+        "name": "Ripple",
+        "symbol": "XRP"
+      },
+      {
+        "id": "7a4f5f72-c96f-438b-8ea9-3df3e73d4781",
+        "name": "Cardano",
+        "symbol": "ADA"
+      },
+      {
+        "id": "9b1c84fd-f978-4bc7-9753-d64f8e6bb34b",
+        "name": "Solana",
+        "symbol": "SOL"
+      }
+    ],
+    "currency_data": [
+      {
+        "currency_id": "1f4e7df8-4519-4bb8-93cc-1ad3c9d72f84",
+        "price": 35000.50,
+        "market_cap": 700000000000.00,
+        "updated_at": "2024-12-01T12:00:00",
+        "source": "CoinMarketCap",
+        "trust_factor": 95
+      },
+      {
+        "currency_id": "4e2d6d27-812b-4d92-9d9e-8c560b57e2f5",
+        "price": 2000.75,
+        "market_cap": 300000000000.00,
+        "updated_at": "2024-12-01T12:00:00",
+        "source": "Binance",
+        "trust_factor": 90
+      },
+      {
+        "currency_id": "5a8e3b3d-f4b0-49f7-a576-85b3bcad6b2f",
+        "price": 0.52,
+        "market_cap": 25000000000.00,
+        "updated_at": "2024-12-01T12:00:00",
+        "source": "Kraken",
+        "trust_factor": 85
+      },
+      {
+        "currency_id": "7a4f5f72-c96f-438b-8ea9-3df3e73d4781",
+        "price": 0.32,
+        "market_cap": 12000000000.00,
+        "updated_at": "2024-12-01T12:00:00",
+        "source": "Coinbase",
+        "trust_factor": 80
+      },
+      {
+        "currency_id": "9b1c84fd-f978-4bc7-9753-d64f8e6bb34b",
+        "price": 42.00,
+        "market_cap": 18000000000.00,
+        "updated_at": "2024-12-01T12:00:00",
+        "source": "Binance",
+        "trust_factor": 88
+      }
+    ],
+    "crypto_data_history": [
+      {
+        "id": "83ed12cf-3c5d-4cb3-a1f8-eae10c18aaf9",
+        "currency_id": "1f4e7df8-4519-4bb8-93cc-1ad3c9d72f84",
+        "price": 34800.00,
+        "market_cap": 690000000000.00,
+        "timestamp": "2024-11-30T12:00:00",
+        "source": "CoinMarketCap",
+        "trust_factor": 92,
+        "created_at": "2024-12-01T12:00:00"
+      },
+      {
+        "id": "55fa69e9-ae34-4c12-80ef-7c78f7d5c6b1",
+        "currency_id": "1f4e7df8-4519-4bb8-93cc-1ad3c9d72f84",
+        "price": 35000.50,
+        "market_cap": 700000000000.00,
+        "timestamp": "2024-12-01T12:00:00",
+        "source": "CoinMarketCap",
+        "trust_factor": 95,
+        "created_at": "2024-12-01T12:05:00"
+      },
+      {
+        "id": "1cb36e2a-9e2e-4aa6-a239-ef71c574b3a2",
+        "currency_id": "4e2d6d27-812b-4d92-9d9e-8c560b57e2f5",
+        "price": 1995.00,
+        "market_cap": 298000000000.00,
+        "timestamp": "2024-11-30T12:00:00",
+        "source": "Binance",
+        "trust_factor": 89,
+        "created_at": "2024-12-01T12:00:00"
+      },
+      {
+        "id": "752d4d75-3822-4e13-8aa2-92bda64b9d5a",
+        "currency_id": "4e2d6d27-812b-4d92-9d9e-8c560b57e2f5",
+        "price": 2000.75,
+        "market_cap": 300000000000.00,
+        "timestamp": "2024-12-01T12:00:00",
+        "source": "Binance",
+        "trust_factor": 90,
+        "created_at": "2024-12-01T12:05:00"
+      },
+      {
+        "id": "bad97dc8-6157-4e34-b98f-875e66b27db6",
+        "currency_id": "5a8e3b3d-f4b0-49f7-a576-85b3bcad6b2f",
+        "price": 0.50,
+        "market_cap": 24000000000.00,
+        "timestamp": "2024-11-30T12:00:00",
+        "source": "Kraken",
+        "trust_factor": 82,
+        "created_at": "2024-12-01T12:00:00"
+      },
+      {
+        "id": "4a41b6b3-68b5-4d0b-9122-c8b2b9c332e8",
+        "currency_id": "5a8e3b3d-f4b0-49f7-a576-85b3bcad6b2f",
+        "price": 0.52,
+        "market_cap": 25000000000.00,
+        "timestamp": "2024-12-01T12:00:00",
+        "source": "Kraken",
+        "trust_factor": 85,
+        "created_at": "2024-12-01T12:05:00"
+      }
+    ]
+  }
+  
