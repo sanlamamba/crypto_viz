@@ -17,6 +17,7 @@
   ],
   "conventionalCommits.scopes": [
     "data-table",
-    "front"
+    "front",
+    "websocket"
   ]
 }
