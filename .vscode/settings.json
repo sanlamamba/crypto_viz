@@ -14,5 +14,9 @@
       "database": "cryptoviz",
       "username": "root"
     }
+  ],
+  "conventionalCommits.scopes": [
+    "data-table",
+    "front"
   ]
 }
