@@ -1,14 +1,18 @@
-from kafka import KafkaConsumer
+import os
 import json
 import logging
+from kafka import KafkaConsumer
+from config.config import KAFKA_BROKER_URL, KAFKA_TOPIC, KAFKA_GROUP_ID
+
+
 
 # Initialize the Kafka consumer
 consumer = KafkaConsumer(
-    "crypto_viz", # TODO move this to env
-    bootstrap_servers=["localhost:9092"], # TODO move this to env
+    KAFKA_TOPIC,
+    bootstrap_servers=[KAFKA_BROKER_URL],
     auto_offset_reset='earliest',
     enable_auto_commit=True,
-    group_id='crypto_consumer_group', # TODO move this to env
+    group_id=KAFKA_GROUP_ID,
     value_deserializer=lambda x: json.loads(x.decode('utf-8'))
 )
 

@@ -37,5 +37,4 @@ class DatabaseConnectionPool:
             self.pool.closeall()
             logging.info("Database connection pool closed.")
 
-
 db_pool = DatabaseConnectionPool(DB_CONNECTION_STRING)
