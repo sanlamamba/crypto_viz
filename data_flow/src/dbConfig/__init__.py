@@ -6,12 +6,8 @@ from alembic import command
 import os
 from .base import Base
 
+from config.config import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 
-DB_USERNAME = os.getenv("DB_USERNAME", "root")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "examplepassword")
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "cryptoviz")
 
 DATABASE_URL = f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
