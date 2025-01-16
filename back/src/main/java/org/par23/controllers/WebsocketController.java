@@ -1,18 +1,21 @@
 package org.par23.controllers;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.par23.models.Currency;
 import org.par23.models.CurrencyData;
-import org.par23.repositories.CurrencyDataHistoryRepository;
-import org.par23.repositories.CurrencyDataRepository;
 import org.par23.repositories.CurrencyRepository;
 
 import jakarta.inject.Inject;
 import io.quarkus.websockets.next.OnTextMessage;
 import io.quarkus.websockets.next.OnClose;
+import io.quarkus.websockets.next.OnError;
 import io.quarkus.websockets.next.OnOpen;
 import io.quarkus.websockets.next.WebSocket;
 import io.quarkus.websockets.next.WebSocketConnection;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebSocket(path = "/websocket")
 public class WebsocketController {
@@ -23,16 +26,11 @@ public class WebsocketController {
     @Inject
     private CurrencyRepository currencyRepository;
 
-    @Inject
-    private CurrencyDataRepository currencyDataRepository;
-
-    @Inject
-    private CurrencyDataHistoryRepository currencyDataHistoryRepository;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @OnOpen
     public void onOpen() {
         System.out.println("WebSocket connection opened");
-
     }
 
     @OnClose
@@ -40,21 +38,37 @@ public class WebsocketController {
         System.out.println("WebSocket connection closed");
     }
 
+    @OnError
+public void onError(Throwable throwable) {
+    System.err.println("WebSocket Error: " + throwable.getMessage());
+    throwable.printStackTrace();
+}
+
+
     @OnTextMessage
-    public Double getCurrentData(String currencyName) {
-        System.out.println("Received message: " + currencyName);
+    public void onMessage(String message) {
+        System.out.println("Received message: " + message);
         try {
-            Optional<CurrencyData> currencyData = currencyDataRepository.findByCurrencyName(currencyName);
-            if (currencyData.isPresent()) {
-                // System.err.println("price : " + currencyData.get().getPrice());
-                return currencyData.get().getPrice();
+            // Check the message type
+            if ("getAllCryptos".equalsIgnoreCase(message)) {
+                // Retrieve all cryptocurrencies
+                List<Currency> currencies = currencyRepository.findAll();
+                
+                // Convert the list to JSON
+                String jsonResponse = objectMapper.writeValueAsString(currencies);
+                
+                // Send the response back to the client
+                connection.sendText(jsonResponse);
             } else {
-                System.err.println("Currency data not found for: " + currencyName);
-                return null;
+                connection.sendText("Unknown command: " + message);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            try {
+                connection.sendText("Error processing message: " + e.getMessage());
+            } catch (Exception sendError) {
+                sendError.printStackTrace();
+            }
         }
     }
 }
