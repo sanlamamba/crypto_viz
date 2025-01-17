@@ -9,6 +9,7 @@ import { RadialChartText } from "./components/radial-chart-text";
 import { LineChartComponent } from "./components/charts/line-chart";
 import { DataTable } from "./components/data-table/data-table";
 import { columns } from "./components/data-table/columns";
+import CurrencyDashboard from "./components/currencyDashboard";
 
 const App: React.FC = () => {
   const mergedData = mergeCryptocurrencyData(cryptocurrencies, currency_data);
@@ -151,6 +152,7 @@ const App: React.FC = () => {
           <BarChartComponent />
           <LineChartComponent />
         </div>
+        <CurrencyDashboard currencyName={"Bitcoin"} />
       </div>
     </div>
   );
