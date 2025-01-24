@@ -1,8 +1,11 @@
 import logging
 import time
 
-from scrapers.coingecko_scraper import scrape_coingecko
-from scrapers.coinmarketcap_scraper import scrape_coinmarketcap
+# from scrapers.coingecko_scraper import scrape_coingecko
+# from scrapers.coinmarketcap_scraper import scrape_coinmarketcap
+from scrapers.setralium import scrape_setralium
+from scrapers.finary import scrape_finary
+# from scrapers.kraken import scrape_kraken
 from scrapers.normalize import DataNormalizer
 from kafka_helper.producer import send_to_kafka
 from kafka_helper.consumer import run_consumer
@@ -10,6 +13,7 @@ from kafka_helper.process_data import process_data
 from utils.retry import retry_on_failure
 from utils.data_validation import validate_data
 from config.logging_config import setup_logging
+# Ajouter Import  su scrapp comme kraken 1
 from utils.scheduler import run_scheduler as schedule_task
 from utils.threading import run_in_threads 
 from dbConfig import init_db
@@ -22,10 +26,17 @@ def run_scraper():
     logging.info("Starting scrapers...")
 
     try:
-        coingecko_data = retry_on_failure(scrape_coingecko)
-        coinmarketcap_data = retry_on_failure(scrape_coinmarketcap)
+        # coingecko_data = retry_on_failure(scrape_coingecko)
+        # coinmarketcap_data = retry_on_failure(scrape_coinmarketcap)
+        # kraken_data = retry_on_failure(scrape_kraken)
+        setralium_data = retry_on_failure(scrape_setralium)
+        finary_data = retry_on_failure(scrape_finary)
+        
+        # 2
+        
 
-        combined_data = coinmarketcap_data + coingecko_data
+        combined_data =  finary_data+ setralium_data
+        # 3
 
 
         normalizer = DataNormalizer(combined_data)

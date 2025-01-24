@@ -55,5 +55,5 @@ def scrape_crypto(source='crypto'):
     return [{**crypto, 'source': source} for crypto in cryptos]
 
 # Appeler la fonction pour tester
-scrape_coingecko()
+scrape_crypto()
 
