@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { cryptocurrencies, currency_data } from "./data/data.json";
-import { mergeCryptocurrencyData } from "./data/utils/mergeData";
+import { cryptocurrencies } from "./data/data.json";
 import DataSelector from "./components/data-selector";
-import ChartComponent from "./components/chart-component";
 import { BarChartComponent } from "./components/charts/bar-chart";
 import { PriceCard } from "./components/price-card";
 import { RadialChartText } from "./components/radial-chart-text";
 import { LineChartComponent } from "./components/charts/line-chart";
-import { DataTable } from "./components/data-table/data-table";
-import { columns } from "./components/data-table/columns";
+
 import CurrencyDashboard from "./components/currencyDashboard";
 
 const App: React.FC = () => {
-  const mergedData = mergeCryptocurrencyData(cryptocurrencies, currency_data);
+
   const availableDataSources = cryptocurrencies.map((crypto) => crypto.name);
 
   const [views, setViews] = useState<
@@ -35,16 +32,7 @@ const App: React.FC = () => {
     setViews([...views, { id, chartType, dataSource }]);
   };
 
-  const getDataForSource = (source: string) => {
-    const crypto = mergedData.find((c) => c.name === source);
-    if (!crypto) return [];
-
-    const data = mergedData.filter((d) => d.id === crypto.id);
-    return [
-      ["Date", "Open", "High", "Low", "Close"],
-      ...data.map((d) => [d.updated_at, d.price, d.price + 1000, d.price - 1000, d.price]),
-    ];
-  };
+  
 
   // WebSocket Connection
   useEffect(() => {
@@ -114,7 +102,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1 className="text-3xl font-bold text-center py-6">Crypto Dashboard</h1>
-
+      <CurrencyDashboard currencyName={"Bitcoin"} />
       <DataSelector
         onAdd={handleAddView}
         availableDataSources={availableDataSources}
@@ -124,19 +112,6 @@ const App: React.FC = () => {
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           {views.map((view) => (
             <div key={view.id} className="grid-cols-4">
-              <ChartComponent
-                key={view.id}
-                chartType={view.chartType}
-                data={getDataForSource(view.dataSource)}
-                options={{
-                  title: view.dataSource,
-                  subtitle: `Real-time price: ${
-                    websocketData[view.dataSource] !== undefined
-                      ? `$${websocketData[view.dataSource]}`
-                      : "Fetching..."
-                  }`,
-                }}
-              />
               <button
                 className="mt-2 p-2 bg-blue-500 text-white rounded"
                 onClick={() => requestWebSocketData(view.dataSource)}
@@ -145,15 +120,15 @@ const App: React.FC = () => {
               </button>
             </div>
           ))}
-          <DataTable columns={columns} data={mergedData} />
           <PriceCard />
           <PriceCard />
           <RadialChartText />
           <BarChartComponent />
           <LineChartComponent />
         </div>
-        <CurrencyDashboard currencyName={"Bitcoin"} />
+        
       </div>
+      
     </div>
   );
 };
