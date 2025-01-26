@@ -18,6 +18,7 @@
   "conventionalCommits.scopes": [
     "data-table",
     "front",
-    "websocket"
+    "websocket",
+    "prometheus"
   ]
 }

@@ -1,0 +1,35 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # Scrappers
+  - job_name: 'app'
+    static_configs:
+      - targets: ['app:5000']
+
+  # Zookeeper (via JMX Exporter)
+  - job_name: 'zookeeper'
+    static_configs:
+      - targets: ['zookeeper:7070']
+
+  # Kafka (via Kafka Exporter)
+  - job_name: 'kafka'
+    static_configs:
+      - targets: ['kafka-exporter:9308']
+
+  # Postgres (via Postgres Exporter)
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  # Grafana
+  - job_name: 'grafana'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['grafana:3000']
+
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
