@@ -7,9 +7,9 @@ export interface Cryptocurrency {
   
   // Interface for the `currency_data` table
   export interface CurrencyData {
-    currency_id: string; // UUID - Reference to `cryptocurrencies.id`
+    currencyId: string; // UUID - Reference to `cryptocurrencies.id`
     price: number; // Current price of the cryptocurrency
-    market_cap: number; // Current market capitalization
+    marketCap: number; // Current market capitalization
     updated_at: string; // ISO 8601 date-time format
     source: string; // Data source (e.g., CoinMarketCap, Binance)
     trust_factor: number; // Confidence indicator (e.g., 0–100 scale)
@@ -20,7 +20,7 @@ export interface Cryptocurrency {
     id: string; // UUID - Unique ID for historical record
     currency_id: string; // UUID - Reference to `cryptocurrencies.id`
     price: number; // Historical price of the cryptocurrency
-    market_cap: number; // Historical market capitalization
+    marketCap: number; // Historical market capitalization
     timestamp: string; // ISO 8601 date-time format - When data was collected
     source: string; // Data source (e.g., CoinMarketCap, Binance)
     trust_factor: number; // Confidence indicator (e.g., 0–100 scale)
@@ -32,7 +32,7 @@ export interface Cryptocurrency {
     name: string;
     symbol: string;
     price: number;
-    market_cap: number;
+    marketCap: number;
     updated_at: string;
     source: string;
     trust_factor: number;

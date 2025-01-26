@@ -28,7 +28,7 @@
     ],
     "currency_data": [
       {
-        "currency_id": "1f4e7df8-4519-4bb8-93cc-1ad3c9d72f84",
+        "currencyId": "1f4e7df8-4519-4bb8-93cc-1ad3c9d72f84",
         "price": 35000.50,
         "market_cap": 700000000000.00,
         "updated_at": "2024-12-01T12:00:00",
