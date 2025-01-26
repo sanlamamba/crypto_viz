@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TrendingUp } from "lucide-react";
+// import { TrendingUp } from "lucide-react";
 import {
   CartesianGrid,
   Line,
@@ -37,7 +37,7 @@ export const LineChartComponent: React.FC<LineChartComponentProps> = ({
   const [timeRange, setTimeRange] = useState<"minutes" | "days" | "months">(
     "minutes"
   );
-  const [dataType, setDataType] = useState<"price" | "marketCap">("price"); // Filtre entre price et marketCap
+  const [dataType, setDataType] = useState<"price" | "marketCap">("price"); 
 
   if (!currencyHistoryData || currencyHistoryData.length === 0) {
     return (
@@ -50,7 +50,7 @@ export const LineChartComponent: React.FC<LineChartComponentProps> = ({
     );
   }
 
-  // Filtrer les données en fonction du timeRange
+  
   const filterDataByTimeRange = () => {
     switch (timeRange) {
       case "minutes":
@@ -76,7 +76,7 @@ export const LineChartComponent: React.FC<LineChartComponentProps> = ({
         currencyHistoryData.forEach((entry) => {
           const day = new Date(entry.timestamp).toISOString().split("T")[0];
           if (!daysMap.has(day)) {
-            daysMap.set(day, entry); // Ajouter la première entrée du jour
+            daysMap.set(day, entry); 
           }
         });
         return Array.from(daysMap.values()).map((entry) => ({
@@ -92,7 +92,7 @@ export const LineChartComponent: React.FC<LineChartComponentProps> = ({
         currencyHistoryData.forEach((entry) => {
           const month = new Date(entry.timestamp).toISOString().slice(0, 7); // Format YYYY-MM
           if (!monthsMap.has(month)) {
-            monthsMap.set(month, entry); // Ajouter la première entrée du mois
+            monthsMap.set(month, entry); 
           }
         });
         return Array.from(monthsMap.values()).map((entry) => ({
@@ -218,14 +218,14 @@ export const LineChartComponent: React.FC<LineChartComponentProps> = ({
       </CardContent>
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
+          {/* <div className="grid gap-2">
             <div className="flex items-center gap-2 font-medium leading-none">
               Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
             </div>
             <div className="flex items-center gap-2 leading-none text-muted-foreground">
               Showing {dataType} history based on the selected time range.
             </div>
-          </div>
+          </div> */}
         </div>
       </CardFooter>
     </Card>

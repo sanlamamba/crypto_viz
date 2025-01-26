@@ -9,7 +9,7 @@ import {
 export const PriceCard: React.FC<{
   currencyName?: string;
   currencyPrice?: number;
-  currencyMarketCap?: string;
+  currencyMarketCap?: number;
 }> = ({ currencyName, currencyPrice, currencyMarketCap }) => {
   return (
     <Card>
@@ -29,9 +29,9 @@ export const PriceCard: React.FC<{
       <CardContent className="text-center">
         <h1>
           {currencyPrice
-            ? `$${currencyPrice}`
+            ? `$${currencyPrice.toFixed(2)}`
             : currencyMarketCap
-            ? `$${currencyMarketCap}`
+            ? `$${currencyMarketCap.toFixed(2)}`
             : "--"}
         </h1>
       </CardContent>
