@@ -9,7 +9,7 @@ const CurrencyDetails: React.FC<{ currencyName: string }> = ({ currencyName }) =
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div>
+    <div className="grid grid-rows-1 gap-4">
       <PriceCard currencyName={currencyName} currencyPrice={data?.price} />
       <PriceCard currencyName={currencyName} currencyPrice={data?.marketCap} />
     </div>

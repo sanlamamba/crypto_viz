@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input"; // Import your Input component
@@ -16,21 +16,9 @@ const CryptoSelector: React.FC<CryptoSelectorProps> = ({ onSelect }) => {
   // Fetch cryptocurrencies using ApiService
   const { data: cryptos, loading, error } = ApiService.useCurrencies();
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   const handleSelect = (crypto: { id: string; name: string; symbol: string }) => {
     setSelectedCrypto(crypto.id);
     onSelect(crypto);
-  };
-
-  const handleScroll = (direction: "left" | "right") => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 200; // Adjust the scroll amount as needed
-      scrollContainerRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
   };
 
   const filteredCryptos = cryptos?.filter((crypto: Cryptocurrency) =>
@@ -52,40 +40,18 @@ const CryptoSelector: React.FC<CryptoSelectorProps> = ({ onSelect }) => {
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">Error: {error}</p>}
         {!loading && !error && (
-          <div className="flex items-center gap-2">
-            {/* Left Arrow */}
-            <button
-              onClick={() => handleScroll("left")}
-              className="bg-gray-200 rounded-full p-2 shadow-md hover:bg-gray-300"
-            >
-              ←
-            </button>
-
-            {/* Badge Container */}
-            <div
-              ref={scrollContainerRef}
-              className="flex gap-2 overflow-x-auto no-scrollbar"
-            >
-              {filteredCryptos?.map((crypto: Cryptocurrency) => (
-                <Badge
-                  key={crypto.id}
-                  onClick={() => handleSelect(crypto)}
-                  className={`cursor-pointer ${
-                    selectedCrypto === crypto.id ? "bg-blue-500 text-white" : ""
-                  }`}
-                >
-                  {crypto.name}
-                </Badge>
-              ))}
-            </div>
-
-            {/* Right Arrow */}
-            <button
-              onClick={() => handleScroll("right")}
-              className="bg-gray-200 rounded-full p-2 shadow-md hover:bg-gray-300"
-            >
-              →
-            </button>
+          <div className="flex flex-col items-start gap-2 max-h-64 overflow-y-auto">
+            {filteredCryptos?.map((crypto: Cryptocurrency) => (
+              <Badge
+                key={crypto.id}
+                onClick={() => handleSelect(crypto)}
+                className={`cursor-pointer ${
+                  selectedCrypto === crypto.id ? "bg-blue-500 text-white" : ""
+                }`}
+              >
+                {crypto.name}
+              </Badge>
+            ))}
           </div>
         )}
       </CardContent>

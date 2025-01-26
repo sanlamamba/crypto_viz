@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -36,13 +35,7 @@ export const PriceCard: React.FC<{
             : "--"}
         </h1>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        {currencyPrice && (
-          <div className="flex items-center gap-2 font-medium leading-none">
-            + --%(24h)
-          </div>
-        )}
-      </CardFooter>
+
     </Card>
   );
 };

@@ -10,7 +10,6 @@ const CurrencyHistory: React.FC<{ currencyName: string }> = ({ currencyName }) =
 
   return (
     <div>
-      <h2>Historical Data for {currencyName}</h2>
       <LineChartComponent  currencyHistoryData={data} currencyName={currencyName} />
     </div>
   );
