@@ -1,5 +1,6 @@
 import { ApiService } from "@/data/apiService";
 import React from "react";
+import { PriceCard } from "../price-card";
 
 const CurrencyDetails: React.FC<{ currencyName: string }> = ({ currencyName }) => {
   const { data, loading, error } = ApiService.useCurrentCurrency(currencyName);
@@ -9,9 +10,8 @@ const CurrencyDetails: React.FC<{ currencyName: string }> = ({ currencyName }) =
 
   return (
     <div>
-      <h2>Currency Details: {currencyName}</h2>
-      <p>Price: {data?.price}</p>
-      <p>Market Cap: {data?.marketCap}</p>
+      <PriceCard currencyName={currencyName} currencyPrice={data?.price} />
+      <PriceCard currencyName={currencyName} currencyPrice={data?.marketCap} />
     </div>
   );
 };

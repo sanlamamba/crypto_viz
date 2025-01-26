@@ -1,4 +1,3 @@
-
 import {
   Card,
   CardContent,
@@ -6,22 +5,44 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 
-
-export const PriceCard = () => {
+export const PriceCard: React.FC<{
+  currencyName?: string;
+  currencyPrice?: number;
+  currencyMarketCap?: string;
+}> = ({ currencyName, currencyPrice, currencyMarketCap }) => {
   return (
-    <Card className="w-[350px]">
+    <Card>
       <CardHeader>
-        <CardTitle>Crypto Name</CardTitle>
-        <CardDescription>Current Crypto Price.</CardDescription>
+        <CardTitle>{currencyName || "Crypto Name"}</CardTitle>
+        <CardDescription>
+  {currencyPrice && !currencyMarketCap
+    ? "Current Crypto Price."
+    : !currencyPrice && currencyMarketCap
+    ? "Current Market Cap."
+    : !currencyPrice && !currencyMarketCap
+    ? "No data available."
+    : "Current Crypto Price and Market Cap."}
+</CardDescription>
+
       </CardHeader>
       <CardContent className="text-center">
-        <h1>$-- </h1>
+        <h1>
+          {currencyPrice
+            ? `$${currencyPrice}`
+            : currencyMarketCap
+            ? `$${currencyMarketCap}`
+            : "--"}
+        </h1>
       </CardContent>
       <CardFooter className="flex justify-between">
-        + --%(24h)
+        {currencyPrice && (
+          <div className="flex items-center gap-2 font-medium leading-none">
+            + --%(24h)
+          </div>
+        )}
       </CardFooter>
     </Card>
-  )
-}
+  );
+};

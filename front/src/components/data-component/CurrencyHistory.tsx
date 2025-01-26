@@ -1,5 +1,6 @@
 import { ApiService } from "@/data/apiService";
 import React from "react";
+import { LineChartComponent } from "../charts/line-chart";
 
 const CurrencyHistory: React.FC<{ currencyName: string }> = ({ currencyName }) => {
   const { data, loading, error } = ApiService.useCurrencyHistory(currencyName);
@@ -10,13 +11,7 @@ const CurrencyHistory: React.FC<{ currencyName: string }> = ({ currencyName }) =
   return (
     <div>
       <h2>Historical Data for {currencyName}</h2>
-      <ul>
-        {data?.map((entry) => (
-          <li key={entry.timestamp}>
-            {entry.timestamp}: {entry.price}
-          </li>
-        ))}
-      </ul>
+      <LineChartComponent  currencyHistoryData={data} currencyName={currencyName} />
     </div>
   );
 };
