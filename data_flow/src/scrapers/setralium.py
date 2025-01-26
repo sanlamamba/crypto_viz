@@ -57,16 +57,30 @@ class CryptoExtractor:
                 continue
 
             try:
-                
-                name = columns[1].text.strip()  
-                price = currencyManager.process(columns[2].text.strip()) 
-                market_cap = currencyManager.process(columns[3].text.strip()) 
+                 # Extract currency name and abbreviation
+                currency_data = columns[2].text.strip().split('\n')
+                currency_name = currency_data[0].strip()
+                currency_abbreviation = currency_data[1].strip() if len(currency_data) > 1 else None
+
+                # Extract price and market cap
+                price_text = columns[4].text.strip()
+                market_cap_text = columns[10].text.strip()
+
+                # Process the extracted text
+                price = currencyManager.process(price_text)
+                market_cap = currencyManager.process(market_cap_text)
 
                 cryptos.append({
-                    'name': name,
+                    'Rank': columns[1].text.strip(),
+                    'name': currency_name,
+                    'abbreviation': currency_abbreviation,
                     'price': price,
+                    '1h Change': columns[5].text.strip(),
+                    '24h Change': columns[6].text.strip(),
+                    '7d Change': columns[7].text.strip(),
                     'market_cap': market_cap,
                 })
+            
             except Exception as e:
                 logging.error(f"Erreur lors de l'extraction d'une ligne : {e}")
                 continue
