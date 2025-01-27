@@ -10,6 +10,9 @@ jobs:
     steps:
       - name: Checkout repository code
         uses: actions/checkout@v2
+        
+      - name: Set up Docker Compose
+        uses: docker/setup-compose@v2
 
       - name: Build the image
         run: cd data_flow && docker-compose build
