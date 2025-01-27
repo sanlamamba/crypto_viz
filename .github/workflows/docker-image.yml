@@ -29,5 +29,11 @@ jobs:
           password: dckr_pat_0PSOGQN0ZIy_RGKrig-x3B0ewAo
           # DOCKER_HUB_USERNAME and DOCKER_HUB_PAT
 
-      - name: Push the image
-        run: docker push sanlamamba/cryptoviz_dataflow:${{ github.sha }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./data_flow
+          push: true
+          tags: |
+            sanlamamba/cryptoviz_dataflow:latest
+            sanlamamba/cryptoviz_dataflow:${{ github.sha }}
