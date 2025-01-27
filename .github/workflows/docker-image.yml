@@ -19,21 +19,20 @@ jobs:
       - name: Build the image
         run: cd data_flow && docker-compose build
 
-      - name: Tag the image with Git SHA
-        run: docker tag sanlamamba/cryptoviz_dataflow:latest sanlamamba/cryptoviz_dataflow:${{ github.sha }}
-
       - name: Login to Docker Hub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: sanlamamba
           password: dckr_pat_0PSOGQN0ZIy_RGKrig-x3B0ewAo
           # DOCKER_HUB_USERNAME and DOCKER_HUB_PAT
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./data_flow
-          push: true
-          tags: |
-            sanlamamba/cryptoviz_dataflow:latest
-            sanlamamba/cryptoviz_dataflow:${{ github.sha }}
+      # 6. Tag the Image with Git SHA
+      - name: Tag Docker Image
+        run: |
+          docker tag sanlamamba/cryptoviz_dataflow:latest sanlamamba/cryptoviz_dataflow:${{ github.sha }}
+
+      # 7. Push Docker Images
+      - name: Push Docker Images
+        run: |
+          docker push sanlamamba/cryptoviz_dataflow:latest
+          docker push sanlamamba/cryptoviz_dataflow:${{ github.sha }}
