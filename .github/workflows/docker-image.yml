@@ -9,30 +9,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-
-      - name: Build the image
-        run: cd data_flow && docker-compose build
-
+      - name: Set Up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
           username: sanlamamba
           password: dckr_pat_0PSOGQN0ZIy_RGKrig-x3B0ewAo
-          # DOCKER_HUB_USERNAME and DOCKER_HUB_PAT
 
-      # 6. Tag the Image with Git SHA
-      - name: Tag Docker Image
-        run: |
-          docker tag sanlamamba/cryptoviz_dataflow:latest sanlamamba/cryptoviz_dataflow:${{ github.sha }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./data_flow
+          push: true
+          tags: |
+            sanlamamba/cryptoviz_dataflow:latest
+            sanlamamba/cryptoviz_dataflow:${{ github.sha }}
 
-      # 7. Push Docker Images
-      - name: Push Docker Images
-        run: |
-          docker push sanlamamba/cryptoviz_dataflow:latest
-          docker push sanlamamba/cryptoviz_dataflow:${{ github.sha }}
+      - name: Verify Docker Images
+        run: docker images | grep sanlamamba/cryptoviz_dataflow
