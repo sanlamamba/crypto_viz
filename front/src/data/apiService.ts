@@ -2,6 +2,7 @@ import { useFetchData } from "@/hooks/useFetchData";
 import { CurrencyData, CryptoDataHistory, Cryptocurrency } from "./interface/coin";
 
 const BASE_URL = "http://localhost:8080/http";
+const REFRESH_INTERVAL = 60000
 
 export const ApiService = {
   /**
@@ -9,7 +10,7 @@ export const ApiService = {
    */
   useCurrentCurrency(currencyName: string) {
     const url = `${BASE_URL}/${currencyName}/current`;
-    return useFetchData<CurrencyData>(url);
+    return useFetchData<CurrencyData>(url, REFRESH_INTERVAL);
   },
 
   /**
@@ -17,7 +18,7 @@ export const ApiService = {
    */
   useCurrencyHistory(currencyName: string) {
     const url = `${BASE_URL}/${currencyName}/history`;
-    return useFetchData<CryptoDataHistory[]>(url);
+    return useFetchData<CryptoDataHistory[]>(url,REFRESH_INTERVAL) ;
   },
 
   /**
@@ -25,7 +26,7 @@ export const ApiService = {
    */
   useCurrencies() {
     const url = `${BASE_URL}/currencies`;
-    return useFetchData<Cryptocurrency[]>(url);
+    return useFetchData<Cryptocurrency[]>(url,REFRESH_INTERVAL);
   },
 
   /**
@@ -33,6 +34,6 @@ export const ApiService = {
    */
   useAllCurrentCurrencies() {
     const url = `${BASE_URL}/currencies/current`;
-    return useFetchData<CurrencyData[]>(url);
+    return useFetchData<CurrencyData[]>(url, REFRESH_INTERVAL);
   },
 };
