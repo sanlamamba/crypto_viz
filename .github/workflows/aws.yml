@@ -1,0 +1,31 @@
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: ssh to image
+      run: ssh -i {{PEM_KEY}} ubuntu@54.173.174.223
+
+    - name: install docker if docker not available
+      run: 
+
+    - name: docker pull 
+      run:
+
+    - name: run image 
