@@ -30,12 +30,13 @@ class CryptoExtractor:
         """Extrait les lignes de la table à partir du contenu HTML."""
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        
         with open("debug_page.html", "wb") as file:
             file.write(response.content)
         logging.info("HTML sauvegardé dans debug_page.html pour vérification.")
 
-        table = soup.find('table')
+        table = soup.find('div', class_='tab-content')
+        # table = soup.find('div', class_='_151k0n00')
+        print(table)
         if not table:
             logging.error("Aucune table trouvée dans le contenu HTML.")
             return []
@@ -57,10 +58,11 @@ class CryptoExtractor:
                 continue
 
             try:
-                 # Extract currency name and abbreviation
+                # Extract currency name and abbreviation
                 currency_data = columns[2].text.strip().split('\n')
                 currency_name = currency_data[0].strip()
                 currency_abbreviation = currency_data[1].strip() if len(currency_data) > 1 else None
+                print(currency_data)
 
                 # Extract price and market cap
                 price_text = columns[4].text.strip()
@@ -69,6 +71,8 @@ class CryptoExtractor:
                 # Process the extracted text
                 price = currencyManager.process(price_text)
                 market_cap = currencyManager.process(market_cap_text)
+
+
 
                 cryptos.append({
                     'Rank': columns[1].text.strip(),
@@ -80,7 +84,7 @@ class CryptoExtractor:
                     '7d Change': columns[7].text.strip(),
                     'market_cap': market_cap,
                 })
-            
+
             except Exception as e:
                 logging.error(f"Erreur lors de l'extraction d'une ligne : {e}")
                 continue
@@ -108,7 +112,6 @@ def scrape_setralium(source='setralium', trust_factor=0.7):
     cryptos = extractor.extract_crypto(response)
     logging.info(f"{len(cryptos)} cryptos extraites.")
 
-
     return [{**crypto, 'source': source, 'trust_factor': trust_factor} for crypto in cryptos]
 
 if __name__ == "__main__":
@@ -119,6 +122,3 @@ if __name__ == "__main__":
         logging.info(f"Données extraites : {cryptos}")
     except Exception as e:
         logging.error(f"Erreur lors du scraping : {e}")
- 
-
-
