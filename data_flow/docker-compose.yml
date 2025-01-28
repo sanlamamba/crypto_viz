@@ -42,8 +42,6 @@ services:
     networks:
       - app-network
 
-
-
   app:
     build:
       context: .
@@ -61,6 +59,7 @@ services:
       - postgres
     networks:
       - app-network
+    restart: on-failure:5
 volumes:
   postgres-data:
   grafana-data:
