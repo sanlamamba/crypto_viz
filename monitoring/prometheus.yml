@@ -8,10 +8,7 @@ scrape_configs:
     static_configs:
       - targets: ['app:5000']
 
-  # Zookeeper (via JMX Exporter)
-  - job_name: 'zookeeper'
-    static_configs:
-      - targets: ['zookeeper:7070']
+
 
   # Kafka (via Kafka Exporter)
   - job_name: 'kafka'

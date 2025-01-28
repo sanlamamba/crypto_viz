@@ -1,0 +1,53 @@
+services:
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+    networks:
+      - app-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - app-network
+
+
+
+  postgres-exporter:
+    image: bitnami/postgres-exporter:latest
+    environment:
+      DATA_SOURCE_URI: postgresql://root:examplepassword@postgres:5432/cryptoviz?sslmode=disable
+    ports:
+      - "9187:9187"
+    networks:
+      - app-network
+
+
+  kafka-exporter:
+    image: danielqsj/kafka-exporter:latest
+    ports:
+      - "9308:9308"
+    environment:
+      KAFKA_BROKERS: kafka:9092
+    networks:
+      - app-network
+
+
+volumes:
+  grafana-data:
+
+networks:
+  app-network:
+    external: true
+

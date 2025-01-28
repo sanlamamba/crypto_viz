@@ -48,55 +48,6 @@ services:
     networks:
       - app-network
 
-  postgres-exporter:
-    image: bitnami/postgres-exporter:latest
-    environment:
-      DATA_SOURCE_URI: postgresql://root:examplepassword@postgres:5432/cryptoviz?sslmode=disable
-    ports:
-      - "9187:9187"
-    depends_on:
-      - postgres
-    networks:
-      - app-network
-
-
-  kafka-exporter:
-    image: danielqsj/kafka-exporter:latest
-    ports:
-      - "9308:9308"
-    environment:
-      KAFKA_BROKERS: kafka:9092
-    depends_on:
-      - kafka
-    networks:
-      - app-network
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana-data:/var/lib/grafana
-    depends_on:
-      - postgres
-    networks:
-      - app-network
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    depends_on:
-      - kafka
-      - zookeeper
-    networks:
-      - app-network
-
   app:
     build:
       context: .
@@ -117,8 +68,8 @@ services:
 
 volumes:
   postgres-data:
-  grafana-data:
 
 networks:
   app-network:
-    driver: bridge
+    external: true
+
