@@ -4,7 +4,7 @@ import { PriceCard } from "../price-card";
 
 const CurrencyDetails: React.FC<{ currencyName: string }> = ({ currencyName }) => {
   const { data, loading, error } = ApiService.useCurrentCurrency(currencyName);
-
+  
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
