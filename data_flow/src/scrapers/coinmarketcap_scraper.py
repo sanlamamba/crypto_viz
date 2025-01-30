@@ -29,7 +29,7 @@ def scrape_coinmarketcap(url='https://coinmarketcap.com/', source_name='coinmark
 
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        crypto_table = soup.find('table', {'class': selectors['table_class']})
+        crypto_table = soup.find('table', {'class':'cmc-table'})
         rows = crypto_table.find('tbody').find_all('tr')
 
         crypto_data = []

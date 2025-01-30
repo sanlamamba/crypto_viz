@@ -45,7 +45,7 @@ class CryptoExtractor:
 
 def scrape_crypto(source='crypto'):
     """Scrapes cryptocurrency data from Crypto.com."""
-    url = 'https://crypto.com/price'
+    url = 'https://www.coindesk.com/fr/price'
     headers = {
         'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                        'AppleWebKit/537.36 (KHTML, like Gecko) '

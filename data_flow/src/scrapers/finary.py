@@ -1,192 +1,68 @@
 import requests
-from bs4 import BeautifulSoup
 import logging
-from utils.currency_manager import CurrencyManager
-from utils.selectors import SelectorConfig
+import time
+from fake_useragent import UserAgent
+import brotli  # Pour décompresser le contenu 'br'
 
-currencyManager = CurrencyManager()
-SelectorConfig = SelectorConfig()
-
-
-# def scrape_finary(url='https://finary.com/fr/crypto', source_name='coinmarketcap', trust_factor=0.9):
-#     """
-#     Scrapes the latest cryptocurrency data from CoinMarketCap's website.
-
-#     :return: A list of cryptocurrencies with name, price, and market cap.
-#     """
-#     selectors = SelectorConfig.get_selectors(source_name)
-
-#     headers = {
-#         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-#     }
-
-#     try:
-#         response = requests.get(url, headers=headers)
-
-#         if response.status_code != 200:
-#             logging.error(f"Failed to fetch data from CoinMarketCap. Status code: {response.status_code}")
-#             raise Exception(f"Failed to fetch data from CoinMarketCap. Status code: {response.status_code}")
-
-#         soup = BeautifulSoup(response.content, 'html.parser')
-
-#         crypto_table = soup.find('table', {'class': selectors['table_class']})
-#         rows = crypto_table.find('tbody').find_all('tr')
-
-#         crypto_data = []
-#         for row in rows:
-#             try:
-#                 name = row.select_one(selectors['name_selector']).text.strip()
-#                 price = row.select_one(selectors['price_selector']).text.strip()
-#                 price = currencyManager.process(price)
-#                 if price is None:
-#                     raise Exception(f"Failed to process price for {name}.")
-                
-#                 market_cap = row.select_one(selectors['market_cap_selector']).text.strip()
-#                 market_cap = currencyManager.process(market_cap)
-#                 if market_cap is None:
-#                     raise Exception(f"Failed to process market cap for {name}.")
-#                 crypto_object = {
-#                     'name': name,
-#                     'price': price,
-#                     'market_cap': market_cap,
-#                     'source': source_name,
-#                     'trust_factor': trust_factor
-#                 }
-#                 crypto_data.append(crypto_object)
-
-#             except Exception as e:
-#                 continue
-
-#         logging.info(f"Successfully scraped {len(crypto_data)} cryptocurrencies from CoinMarketCap.")
-#         print(f"Successfully scraped {len(crypto_data)} cryptocurrencies from CoinMarketCap.")
-#         return crypto_data
-
-#     except Exception as e:
-#         logging.error(f"Error while scraping CoinMarketCap: {e}")
-#         print(e)
-#         return []
-    
-import requests
-from bs4 import BeautifulSoup
-import logging
-import sys
-import os
-from utils.currency_manager import CurrencyManager
-
-# Configurer le logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler()
-    ]
-)
-
-# Ajouter le répertoire `src` au PYTHONPATH si nécessaire
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.abspath(os.path.join(current_dir, '..'))
-if parent_dir not in sys.path:
-    sys.path.append(parent_dir)
-
-# Initialiser le CurrencyManager
-currencyManager = CurrencyManager()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 class CryptoExtractor:
+    def __init__(self):
+        self.session = requests.Session()
+        self.user_agent = UserAgent()
 
-    @staticmethod
-    def soup_extract(response):
-        """Extrait les lignes de la table à partir du contenu HTML."""
-        soup = BeautifulSoup(response.content, 'html.parser')
+    def get_headers(self):
+        return {
+            'User-Agent': self.user_agent.random,
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Accept-Encoding': 'br',  # Spécifie explicitement brotli
+            'Connection': 'keep-alive'
+        }
 
-        # Sauvegarder le contenu HTML pour débogage
-        with open("debug_page.html", "wb") as file:
-            file.write(response.content)
-        logging.info("HTML sauvegardé dans debug_page.html pour vérification.")
+    def extract_crypto(self, url):
+        try:
+            response = self.session.get(
+                url,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            print("\n=== Code de statut ===")
+            print(f"Status: {response.status_code}")
+            print("\n=== Headers de réponse ===")
+            print(response.headers)
+            
+            # Décompresser le contenu
+            decoded_content = brotli.decompress(response.content).decode('utf-8')
+            
+            print("\n=== Début du HTML décompressé ===")
+            print(decoded_content[:2000])
+            print("=== Fin du preview HTML ===\n")
 
-        # Rechercher la table dans le HTML
-        table = soup.find('table')
-        if not table:
-            logging.error("Aucune table trouvée dans le contenu HTML.")
+            # Sauvegarder le HTML décompressé
+            with open("debug_page_decompressed.html", "w", encoding='utf-8') as f:
+                f.write(decoded_content)
+
             return []
-        else:
-            table_rows = table.find_all('tr')
-            logging.info(f"Table trouvée avec {len(table_rows)} lignes.")
-            return table_rows
 
-    @staticmethod
-    def extract_crypto(response):
-        """Extrait les données des crypto-monnaies à partir des lignes de la table."""
-        table_rows = CryptoExtractor.soup_extract(response)
-
-        cryptos = []
-
-        for row in table_rows:
-            columns = row.find_all('td')
-            if not columns:
-                continue
-
-            try:
-                # Extract currency name and abbreviation
-                currency_data = columns[2].text.strip().split('\n')
-                currency_name = currency_data[0].strip()
-                currency_abbreviation = currency_data[1].strip() if len(currency_data) > 1 else None
-
-                # Extract price and market cap
-                price_text = columns[4].text.strip()
-                market_cap_text = columns[10].text.strip()
-
-                # Process the extracted text
-                price = currencyManager.process(price_text)
-                market_cap = currencyManager.process(market_cap_text)
-
-                cryptos.append({
-                    'Rank': columns[1].text.strip(),
-                    'name': currency_name,
-                    'abbreviation': currency_abbreviation,
-                    'price': price,
-                    '1h Change': columns[5].text.strip(),
-                    '24h Change': columns[6].text.strip(),
-                    '7d Change': columns[7].text.strip(),
-                    'market_cap': market_cap,
-                })
-            except Exception as e:
-                logging.error(f"Erreur lors de l'extraction d'une ligne : {e}")
-                continue
-
-        return cryptos
+        except Exception as e:
+            logging.error(f"Erreur: {str(e)}")
+            return []
 
 def scrape_finary(source='finary', trust_factor=0.7):
-    """Fonction principale pour scraper les données de crypto-monnaies depuis Kraken."""
     url = 'https://finary.com/fr/crypto'
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Connection': 'keep-alive'
-    }
+    
+    try:
+        extractor = CryptoExtractor()
+        return extractor.extract_crypto(url)
 
-    response = requests.get(url, headers=headers)
-    logging.info(f"Requête envoyée à {url} avec status code {response.status_code}.")
-
-    if response.status_code != 200:
-        raise Exception(f"Erreur lors de la récupération des données. Code HTTP: {response.status_code}")
-
-    # Extraction des données
-    extractor = CryptoExtractor()
-    cryptos = extractor.extract_crypto(response)
-    logging.info(f"{len(cryptos)} cryptos extraites.")
-
-    # Ajout d'informations complémentaires à chaque crypto
-    return [{**crypto, 'source': source, 'trust_factor': trust_factor} for crypto in cryptos]
+    except Exception as e:
+        logging.error(f"Erreur scraping: {str(e)}")
+        return []
 
 if __name__ == "__main__":
     try:
-        # Exécuter la fonction de scraping
-        cryptos = scrape_finary()
-
-        # Afficher les données extraites pour débogage
-        logging.info(f"Données extraites : {cryptos}")
+        scrape_finary()
     except Exception as e:
-        logging.error(f"Erreur lors du scraping : {e}")
- 
+        logging.error(f"Erreur: {e}")

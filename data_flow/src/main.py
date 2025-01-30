@@ -3,6 +3,8 @@ import time
 
 from scrapers.coingecko_scraper import scrape_coingecko
 from scrapers.coinmarketcap_scraper import scrape_coinmarketcap
+from scrapers.finary import scrape_finary
+from scrapers.kraken import scrape_kraken
 from scrapers.normalize import DataNormalizer
 from kafka_helper.producer import send_to_kafka
 from kafka_helper.consumer import run_consumer
@@ -24,8 +26,12 @@ def run_scraper():
     try:
         coingecko_data = retry_on_failure(scrape_coingecko)
         coinmarketcap_data = retry_on_failure(scrape_coinmarketcap)
+        # finary_data = retry_on_failure(scrape_finary)
+    
 
-        combined_data = coinmarketcap_data + coingecko_data
+        combined_data = coinmarketcap_data + coingecko_data  
+        # finary_data 
+        # + scrape_kraken
 
 
         normalizer = DataNormalizer(combined_data)
@@ -49,13 +55,15 @@ def main():
     Run both producer (scraper) and consumer concurrently using threads.
     """
     init_db()
+    # print(scrape_kraken())
+    print(scrape_finary())
 
     ochestrator = [
         (start_scheduler, ()),  
         (run_consumer, (process_data,)) 
     ]
 
-    run_in_threads(ochestrator)
+    # run_in_threads(ochestrator)
 
 
 if __name__ == "__main__":
