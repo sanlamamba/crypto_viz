@@ -29,36 +29,42 @@ def scrape_coinmarketcap(url='https://coinmarketcap.com/', source_name='coinmark
 
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        crypto_table = soup.find('table', {'class': selectors['table_class']})
+        crypto_table = soup.find('table', {'class':'cmc-table'})
         rows = crypto_table.find('tbody').find_all('tr')
 
         crypto_data = []
         for row in rows:
             try:
+                rank = row.select_one(selectors['rank_selector']).text.strip()
                 name = row.select_one(selectors['name_selector']).text.strip()
+                abbreviation = row.select_one(selectors['abbreviation_selector']).text.strip()
                 price = row.select_one(selectors['price_selector']).text.strip()
                 price = currencyManager.process(price)
                 if price is None:
                     raise Exception(f"Failed to process price for {name}.")
-                
+
+                one_hour_change = row.select_one(selectors['1h_change_selector']).text.strip()
+                twenty_four_hour_change = row.select_one(selectors['24h_change_selector']).text.strip()
+                seven_day_change = row.select_one(selectors['7d_change_selector']).text.strip()
+
                 market_cap = row.select_one(selectors['market_cap_selector']).text.strip()
                 market_cap = currencyManager.process(market_cap)
-                if market_cap is None:
-                    raise Exception(f"Failed to process market cap for {name}.")
                 crypto_object = {
-                    'name': name,
-                    'price': price,
-                    'market_cap': market_cap,
-                    'source': source_name,
-                    'trust_factor': trust_factor
+                    "Rank": rank,
+                    "name": name,
+                    "abbreviation": abbreviation,
+                    "price": price,
+                    "1h Change": one_hour_change,
+                    "24h Change": twenty_four_hour_change,
+                    "7d Change": seven_day_change,
+                    "market_cap": market_cap,
+                    "source": source_name,
+                    "trust_factor": trust_factor
                 }
                 crypto_data.append(crypto_object)
 
             except Exception as e:
                 continue
-
-        logging.info(f"Successfully scraped {len(crypto_data)} cryptocurrencies from CoinMarketCap.")
-        print(f"Successfully scraped {len(crypto_data)} cryptocurrencies from CoinMarketCap.")
         return crypto_data
 
     except Exception as e:

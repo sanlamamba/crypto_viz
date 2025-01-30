@@ -57,5 +57,4 @@ def scrape_coingecko(source='coingecko', trust_factor=0.7):
     response = request_manager.get(url, headers=headers)
     extractor = CryptoExtractor()
     cryptos = extractor.extract_crypto(response)
-
     return [{**crypto, 'source': source, 'trust_factor': trust_factor} for crypto in cryptos]

@@ -1,18 +1,15 @@
 import logging
+from run_scrapers import run_all_scrapers
 import uvicorn
 import time
-
-from scrapers.coingecko_scraper import scrape_coingecko
-from scrapers.coinmarketcap_scraper import scrape_coinmarketcap
 from scrapers.normalize import DataNormalizer
 from kafka_helper.producer import send_to_kafka
 from kafka_helper.consumer import run_consumer
 from kafka_helper.process_data import process_data
-from utils.retry import retry_on_failure
 from utils.data_validation import validate_data
 from config.logging_config import setup_logging
 from utils.scheduler import run_scheduler as schedule_task
-from utils.threading import run_in_threads 
+from utils.threading import run_in_threads
 from dbConfig import init_db
 from fastapi import FastAPI, Response
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
@@ -33,26 +30,18 @@ def run_scraper():
     logging.info("Starting scrapers...")
 
     try:
-        coingecko_data = retry_on_failure(scrape_coingecko)
-        coinmarketcap_data = retry_on_failure(scrape_coinmarketcap)
-
-        combined_data = coinmarketcap_data + coingecko_data
-
-
+        combined_data = run_all_scrapers()
         normalizer = DataNormalizer(combined_data)
         normalized_data = normalizer.normalize_data()
-        
         validate_data(normalized_data)
         send_to_kafka(normalized_data)
-        logging.info("Data successfully sent to Kafka.")
     except Exception as e:
         logging.error(f"Error during scraping and sending data: {e}")
 
 def start_scheduler():
     """
-    Run the scheduler to scrape data every 5 minutes.
+    Run the scheduler to scrape data every 1 minute.
     """
-    logging.info("Starting scheduler for scraping every 1 minutes.")
     schedule_task(run_scraper, interval=1) 
     
 def start_uvicorn():
@@ -75,7 +64,5 @@ def main():
     run_in_threads(ochestrator, timeout=None)
 
 
-
 if __name__ == "__main__":
-    init_db()
-    main()
+    run_scraper()
