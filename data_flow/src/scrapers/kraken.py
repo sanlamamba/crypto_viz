@@ -184,9 +184,9 @@ def scrape_kraken(source='kraken', trust_factor=0.7):
                     crypto_data = {
                         'name': name,
                         'price': price,
-                        'volume_24h': float(info['v'][1]),  # Volume sur 24h
-                        'high_24h': float(info['h'][1]),    # Plus haut sur 24h
-                        'low_24h': float(info['l'][1]),     # Plus bas sur 24h
+                        'volume_24h': float(info['v'][1]), 
+                        'high_24h': float(info['h'][1]),   
+                        'low_24h': float(info['l'][1]),     
                         'timestamp': time.time(),
                         'source': source,
                         'trust_factor': trust_factor
