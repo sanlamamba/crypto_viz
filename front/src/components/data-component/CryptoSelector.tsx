@@ -26,9 +26,9 @@ const CryptoSelector: React.FC<CryptoSelectorProps> = ({ onSelect }) => {
   );
 
   return (
-    <Card className="p-4 w-full max-w-lg">
-      <CardHeader>
-        <CardTitle>Select a Cryptocurrency</CardTitle>
+    <Card className="w-full max-w-lg">
+      <CardHeader className={'bg-none'}>
+        <CardTitle className={'mb-4'} >Select a Cryptocurrency</CardTitle>
         <Input
           placeholder="Search Cryptocurrency..."
           value={searchQuery}

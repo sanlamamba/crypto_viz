@@ -17,7 +17,7 @@ const CurrencyDashboard: React.FC<{ currencyName?: string }> = ({ currencyName }
           </div>
         </div>
       ) : (
-        <p className="text-center text-gray-500">
+        <p className=" text-gray-500 pb-6">
           Select a cryptocurrency to view its details.
         </p>
       )}
