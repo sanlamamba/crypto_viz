@@ -41,7 +41,7 @@ const AllCurrentCurrencies: React.FC = () => {
       header: "Source",
     },
     {
-      accessorKey: "trust_factor",
+      accessorKey: "trustFactor",
       header: "Trust Factor",
     },
   ];

@@ -17,7 +17,7 @@ import { Cryptocurrency, CurrencyData, MergedCryptoData } from "../interface/coi
         marketCap: currencyInfo?.marketCap || 0,
         updated_at: currencyInfo?.updated_at || '',
         source: currencyInfo?.source || '',
-        trust_factor: currencyInfo?.trust_factor || 0
+        trustFactor: currencyInfo?.trustFactor || 0
       };
     });
 }

@@ -42,7 +42,7 @@ export const columns: ColumnDef<MergedCryptoData>[] = [
     header: "Source",
   },
   {
-    accessorKey: "trust_factor",
+    accessorKey: "trustFactor",
     header: "Trust Factor",
   },
 ]
