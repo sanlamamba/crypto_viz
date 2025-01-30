@@ -13,6 +13,8 @@ class CryptoDataManager:
         Fetches or inserts a new entry in the currencies table and returns the currency ID.
         Ensures that the id is generated as a UUID if inserting a new currency.
         """
+        if name in ["Bitcoin Wrapped", "Wrapped Bitcoin", "Wrapped BTC", "WBTC", "Bitcoin Cash", "Cash Bitcoin"]:
+            return None
         insert_query = """
         INSERT INTO currencies (id, name, symbol)
         VALUES (%s, %s, %s)
