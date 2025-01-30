@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from utils.currency_manager import CurrencyManager
 
-# Initialize CurrencyManager
 currencyManager = CurrencyManager()
 
 
@@ -17,9 +16,9 @@ class CryptoExtractor:
             print("Error: No cryptocurrency table found.")
             return []
 
-        tbody = table.find('tbody')  # Handle cases where data is inside <tbody>
+        tbody = table.find('tbody') 
         rows = tbody.find_all('tr') if tbody else table.find_all('tr')
-        print(f"Total Rows Found: {len(rows)}")  # Debugging print
+        print(f"Total Rows Found: {len(rows)}")  
         return rows
 
     @staticmethod
@@ -29,30 +28,30 @@ class CryptoExtractor:
         cryptos = []
         for i, row in enumerate(table_rows):
             columns = row.find_all('td')
-            print(f"Row {i} Data: {[col.text.strip() for col in columns]}")  # Debugging print
+            print(f"Row {i} Data: {[col.text.strip() for col in columns]}")
 
-            if len(columns) < 8:  # Adjust based on actual number of columns
+            if len(columns) < 8: 
                 continue
 
             try:
-                currency_data = columns[1].text.strip().split('\n')  # Adjusted index
+                currency_data = columns[1].text.strip().split('\n') 
                 currency_name = currency_data[0].strip() if currency_data else None
                 currency_abbreviation = currency_data[1].strip() if len(currency_data) > 1 else None
 
-                price_text = columns[2].text.strip()  # Adjusted index
-                market_cap_text = columns[7].text.strip()  # Adjusted index
+                price_text = columns[2].text.strip()  
+                market_cap_text = columns[7].text.strip()
 
                 price = currencyManager.process(price_text) if price_text else None
                 market_cap = currencyManager.process(market_cap_text) if market_cap_text else None
 
                 cryptos.append({
-                    'Rank': columns[0].text.strip(),  # Adjusted index
+                    'Rank': columns[0].text.strip(),
                     'Name': currency_name,
                     'Abbreviation': currency_abbreviation,
                     'Price': price,
-                    '1h Change': columns[3].text.strip(),  # Adjusted index
-                    '24h Change': columns[4].text.strip(),  # Adjusted index
-                    '7d Change': columns[5].text.strip(),  # Adjusted index
+                    '1h Change': columns[3].text.strip(),  
+                    '24h Change': columns[4].text.strip(), 
+                    '7d Change': columns[5].text.strip(),  
                     'Market Cap': market_cap,
                 })
             except (IndexError, AttributeError) as e:
@@ -79,15 +78,9 @@ def scrape_coins(source='coins', trust_factor=0.7):
 
         extractor = CryptoExtractor()
         cryptos = extractor.extract_crypto(response)
-
         return [{**crypto, 'Source': source, 'Trust Factor': trust_factor} for crypto in cryptos]
 
     except requests.RequestException as e:
         print(f"Error fetching data: {e}")
         return []
 
-
-# Test the function
-if __name__ == "__main__":
-    crypto_data = scrape_coins()
-    print(crypto_data[:5])  # Print first 5 entries for verification

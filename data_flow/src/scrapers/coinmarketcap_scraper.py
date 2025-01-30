@@ -57,8 +57,6 @@ def scrape_coinmarketcap(url='https://coinmarketcap.com/', source_name='coinmark
             except Exception as e:
                 continue
 
-        logging.info(f"Successfully scraped {len(crypto_data)} cryptocurrencies from CoinMarketCap.")
-        print(f"Successfully scraped {len(crypto_data)} cryptocurrencies from CoinMarketCap.")
         return crypto_data
 
     except Exception as e:

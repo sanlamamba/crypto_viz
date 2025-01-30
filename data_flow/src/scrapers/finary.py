@@ -32,7 +32,6 @@ class CryptoExtractor:
             # Extract Rank
             rank = columns[0].get_text(strip=True)
 
-            # Extract Name and Abbreviation
             name_col = columns[1]
             name_spans = name_col.find_all('span')
             if len(name_spans) >= 2:
@@ -70,7 +69,7 @@ class CryptoExtractor:
                 'Market Cap': market_cap,
             })
         return cryptos
-def scrape_finary(url='https://finary.com/fr/crypto', source_name='finary', trust_factor=0.7):
+def scrape_finary(url='https://finary.com/fr/crypto', source_name='finary', trust_factor=0.65):
     """
     Scrape les cryptocurrencies depuis Finary.
     
@@ -89,5 +88,4 @@ def scrape_finary(url='https://finary.com/fr/crypto', source_name='finary', trus
 
     extractor = CryptoExtractor()
     cryptos = extractor.extract_crypto(response)
-
     return [{**crypto, 'source': source_name, 'trust_factor': trust_factor} for crypto in cryptos]
