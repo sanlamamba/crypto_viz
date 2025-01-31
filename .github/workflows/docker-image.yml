@@ -28,6 +28,3 @@ jobs:
           tags: |
             sanlamamba/cryptoviz_dataflow:latest
             sanlamamba/cryptoviz_dataflow:${{ github.sha }}
-
-      - name: Verify Docker Images
-        run: docker images | grep sanlamamba/cryptoviz_dataflow
